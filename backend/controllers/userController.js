@@ -35,3 +35,33 @@ export const register = async (req, res) => {
     console.log(error);
   }
 };
+
+export const login = async (req, res) => {
+  const { email, password } = req.body;
+
+  if (!email || !password) {
+    return res.status(400).json({ msg: "Please provide all values" });
+  }
+
+  try {
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(404).json({ msg: "Incorrect email id" });
+    }
+
+    const comparePassword = await user.comparePassword(password);
+    if (!comparePassword) {
+      return res.status(404).json({ msg: "Incorrect password" });
+    }
+
+    const token = user.createJWT();
+    res
+      .status(201)
+      .json({ user: { email: user.email, name: user.name }, token });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ msg: "Something went wrong please try again later", error });
+    console.log(error);
+  }
+};

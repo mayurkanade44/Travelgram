@@ -7,7 +7,6 @@ const UserSchema = new mongoose.Schema({
   email: { type: String, required: true },
   password: { type: String, minlength: 5 },
   googleId: { type: String },
-  id: { type: String },
 });
 
 UserSchema.pre("save", async function () {
@@ -19,6 +18,11 @@ UserSchema.methods.createJWT = function () {
   return jwt.sign({ userId: this._id }, process.env.JWT_SECRET, {
     expiresIn: process.env.JWT_LIFETIME,
   });
+};
+
+UserSchema.methods.comparePassword = async function (password) {
+  const isMatch = await bcrypt.compare(password, this.password);
+  return isMatch;
 };
 
 export default mongoose.model("User", UserSchema);
