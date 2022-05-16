@@ -9,3 +9,11 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
+
+
+.member-btn {
+    background: transparent;
+    border: transparent;
+    color: green;
+    cursor: pointer;
+  }
