@@ -11,7 +11,7 @@ import {
   MDBBtn,
   MDBIcon,
 } from "mdb-react-ui-kit";
-import { login } from "../redux/userSlice";
+import { login, register } from "../redux/userSlice";
 
 const intialState = {
   name: "",
@@ -39,7 +39,7 @@ const Login = () => {
     if (isMember) {
       return dispatch(login({ email, password }));
     }
-    
+    dispatch(register({ name, email, password }));
   };
 
   const toggleMember = () => {

@@ -2,7 +2,7 @@ import axios from "axios";
 
 export const authFetch = axios.create({ baseURL: "https://localhost:5000/api" });
 
-export const addLocalStorage = (user) => {
+export const addLocalStorage = (user, token) => {
     return localStorage.setItem('user', JSON.stringify(user))
 }
 
