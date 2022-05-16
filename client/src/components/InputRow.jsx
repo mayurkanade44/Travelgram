@@ -17,7 +17,6 @@ const InputRow = ({
       name={name}
       onChange={onChange}
       required={required}
-      invalid
       validation="Please provide your email"
     />
   );

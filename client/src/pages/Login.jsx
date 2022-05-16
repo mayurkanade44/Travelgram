@@ -1,4 +1,7 @@
 import { useState, useEffect } from "react";
+import { InputRow } from "../components";
+import { useDispatch, useSelector } from "react-redux";
+import { toast } from "react-toastify";
 import {
   MDBCard,
   MDBCardBody,
@@ -8,7 +11,7 @@ import {
   MDBBtn,
   MDBIcon,
 } from "mdb-react-ui-kit";
-import { InputRow } from "../components";
+import { login } from "../redux/userSlice";
 
 const intialState = {
   name: "",
@@ -18,6 +21,9 @@ const intialState = {
 };
 
 const Login = () => {
+  const { loading, user } = useSelector((store) => store.user);
+  const dispatch = useDispatch();
+
   const [formValue, setFormValue] = useState(intialState);
   const { name, email, password, isMember } = formValue;
 
@@ -29,6 +35,11 @@ const Login = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    if (isMember) {
+      return dispatch(login({ email, password }));
+    }
+    
   };
 
   const toggleMember = () => {
