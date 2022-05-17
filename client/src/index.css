@@ -10,10 +10,31 @@ code {
     monospace;
 }
 
+.user-brand {
+  color: #606080;
+  font-weight: 700 !important;
+  font-size: 30px;
+  letter-spacing: 2px;
+  margin: 12px 20px;
+}
+
+.brand {
+}
 
 .member-btn {
-    background: transparent;
-    border: transparent;
-    color: green;
-    cursor: pointer;
-  }
+  background: transparent;
+  border: transparent;
+  color: green;
+  cursor: pointer;
+}
+
+.header-text {
+  color: white;
+  font-size: 19px;
+  font-weight: 200;
+  margin-top: 22px;
+  margin-right: 50px;
+}
+.header-text:hover {
+  color: yellow;
+}

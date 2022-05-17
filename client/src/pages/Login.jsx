@@ -144,7 +144,7 @@ const Login = () => {
               </MDBBtn>
             </div>
           </MDBValidation>
-          {/* <GoogleLogin
+          <GoogleLogin
             clientId="311111338521-kdqu8fqai09mbdba8qon5obu8d50ihk5.apps.googleusercontent.com"
             render={(renderProps) => (
               <MDBBtn
@@ -160,7 +160,7 @@ const Login = () => {
             onSuccess={googleSuccess}
             onFailure={googleFailure}
             cookiePolicy="single_host_origin"
-          /> */}
+          />
         </MDBCardBody>
         <MDBCardFooter>
           {isMember ? "Not a Traveller yet?" : "Already a Traveller?"}
