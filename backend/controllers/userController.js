@@ -19,7 +19,7 @@ export const register = async (req, res) => {
     const token = user.createJWT();
     res
       .status(201)
-      .json({ user: { email: user.email, name: user.name }, token });
+      .json({ user: { email: user.email, name: user.name, token: token } });
   } catch (error) {
     if (
       error.message ==
@@ -56,8 +56,8 @@ export const login = async (req, res) => {
 
     const token = user.createJWT();
     res
-      .status(201)
-      .json({ user: { email: user.email, name: user.name }, token });
+      .status(200)
+      .json({ user: { email: user.email, name: user.name, token: token } });
   } catch (error) {
     res
       .status(500)

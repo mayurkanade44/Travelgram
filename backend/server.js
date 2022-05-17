@@ -2,7 +2,6 @@ import express from "express";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 import morgan from "morgan";
-import cors from "cors";
 
 const app = express();
 dotenv.config();
@@ -14,7 +13,6 @@ if (process.env.NODE_ENV !== "production") {
 }
 app.use(express.json({ limit: "10mb", extended: true }));
 app.use(express.urlencoded({ limit: "10mb", extended: true }));
-app.use(cors());
 
 app.use("/api/user", userRouter);
 

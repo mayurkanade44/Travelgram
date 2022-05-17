@@ -36,10 +36,10 @@ const userSlice = createSlice({
       state.loading = true;
     },
     [login.fulfilled]: (state, { payload }) => {
-      const { user, token } = payload;
+      const { user } = payload;
       state.loading = false;
       state.user = user;
-      addLocalStorage(user, token);
+      addLocalStorage(user);
       toast.success(`Hello Wanderer ${user.name}`);
     },
     [login.rejected]: (state, { payload }) => {
@@ -50,16 +50,16 @@ const userSlice = createSlice({
       state.loading = true;
     },
     [register.fulfilled]: (state, { payload }) => {
-      const { user, token } = payload;
+      const { user } = payload;
       state.loading = false;
       state.user = user;
-      addLocalStorage(user, token);
+      addLocalStorage(user);
       toast.success(`Welcome Wanderer ${user.name}`);
     },
-    [register.rejected]: (state, {payload}) => {
+    [register.rejected]: (state, { payload }) => {
       state.loading = false;
-      toast.error(payload)
-    }
+      toast.error(payload);
+    },
   },
 });
 
