@@ -1,7 +1,10 @@
 import { useState, useEffect } from "react";
 import { InputRow } from "../components";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import { googleLogin, login, register } from "../redux/userSlice";
+import { GoogleLogin } from "react-google-login";
 import {
   MDBCard,
   MDBCardBody,
@@ -11,7 +14,6 @@ import {
   MDBBtn,
   MDBIcon,
 } from "mdb-react-ui-kit";
-import { login, register } from "../redux/userSlice";
 
 const intialState = {
   name: "",
@@ -23,6 +25,7 @@ const intialState = {
 const Login = () => {
   const { loading, user } = useSelector((store) => store.user);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const [formValue, setFormValue] = useState(intialState);
   const { name, email, password, isMember } = formValue;
@@ -35,16 +38,43 @@ const Login = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    if (!email || !password || (!isMember && !name)) {
+      return toast.error("provide all values");
+    }
 
     if (isMember) {
       return dispatch(login({ email, password }));
     }
-    dispatch(register({ name, email, password }));
+    dispatch(
+      register({ name: name[0].toUpperCase() + name.slice(1), email, password })
+    );
   };
 
   const toggleMember = () => {
     setFormValue({ ...formValue, isMember: !isMember });
   };
+
+  const googleSuccess = (resp) => {
+    console.log("login");
+    const email = resp?.profileObj?.email;
+    const name = resp?.profileObj?.name;
+    const token = resp?.tokenId;
+    const googleId = resp?.googleId;
+    const result = { email, name, token, googleId };
+    dispatch(googleLogin(result));
+  };
+
+  const googleFailure = (error) => {
+    toast.error(error);
+  };
+
+  useEffect(() => {
+    if (user) {
+      setTimeout(() => {
+        navigate("/home");
+      }, 2000);
+    }
+  }, [user]);
 
   return (
     <div
@@ -102,18 +132,35 @@ const Login = () => {
             </div>
             <div className="col-12">
               <MDBBtn style={{ width: "100%" }} className="mt-2">
-                {/* {loading && (
+                {loading && (
                   <MDBSpinner
                     size="sm"
                     role="status"
                     tag="span"
                     className="me-2"
                   />
-                )} */}
+                )}
                 Login
               </MDBBtn>
             </div>
           </MDBValidation>
+          {/* <GoogleLogin
+            clientId="311111338521-kdqu8fqai09mbdba8qon5obu8d50ihk5.apps.googleusercontent.com"
+            render={(renderProps) => (
+              <MDBBtn
+                style={{ width: "100%" }}
+                color="dark"
+                className="mt-2"
+                onClick={renderProps.onClick}
+                disabled={renderProps.disabled}
+              >
+                <MDBIcon className="me-2" fab icon="google" /> Google Sign In
+              </MDBBtn>
+            )}
+            onSuccess={googleSuccess}
+            onFailure={googleFailure}
+            cookiePolicy="single_host_origin"
+          /> */}
         </MDBCardBody>
         <MDBCardFooter>
           {isMember ? "Not a Traveller yet?" : "Already a Traveller?"}

@@ -61,7 +61,31 @@ export const login = async (req, res) => {
   } catch (error) {
     res
       .status(500)
-      .json({ msg: "Something went wrong please try again later", error });
+      .json({ msg: "Something went wrong please try again later" });
+    console.log(error);
+  }
+};
+
+export const googleLogin = async (req, res) => {
+  const { name, email, token, googleId } = req.body;
+  console.log(req);
+  console.log(name, email, token, googleId);
+  try {
+    const alreadyUser = await User.findOne({ email });
+    if (alreadyUser) {
+      return res
+        .status(200)
+        .json({ user: { name: name, email: email, token: token } });
+    }
+
+    const user = await User.create({ name, email, googleId });
+    return res
+      .status(200)
+      .json({ user: { email: user.email, name: user.name, token: token } });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ msg: "Something went wrong please try again later" });
     console.log(error);
   }
 };

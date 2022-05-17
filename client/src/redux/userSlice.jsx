@@ -1,9 +1,9 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { addLocalStorage, authFetch, getUserFromLocalStorage } from "../utils";
+import { authFetch } from "../utils";
 import { toast } from "react-toastify";
 
 const initialState = {
-  user: getUserFromLocalStorage(),
+  user: JSON.parse(localStorage.getItem("user")) || null,
   loading: false,
 };
 
@@ -28,6 +28,19 @@ export const register = createAsyncThunk(
   }
 );
 
+export const googleLogin = createAsyncThunk(
+  "user/googleLogin",
+  async (user, thunkAPI) => {
+    try {
+      const res = await authFetch.post("/user/googleLogin", user);
+      console.log(res.data);
+      return res.data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.response.data.msg);
+    }
+  }
+);
+
 const userSlice = createSlice({
   name: "user",
   initialState,
@@ -39,7 +52,7 @@ const userSlice = createSlice({
       const { user } = payload;
       state.loading = false;
       state.user = user;
-      addLocalStorage(user);
+      localStorage.setItem("user", JSON.stringify(user));
       toast.success(`Hello Wanderer ${user.name}`);
     },
     [login.rejected]: (state, { payload }) => {
@@ -53,10 +66,23 @@ const userSlice = createSlice({
       const { user } = payload;
       state.loading = false;
       state.user = user;
-      addLocalStorage(user);
-      toast.success(`Welcome Wanderer ${user.name}`);
+      localStorage.setItem("user", JSON.stringify(user));
+      toast.success(`Welcome New Wanderer ${user.name}`);
     },
     [register.rejected]: (state, { payload }) => {
+      state.loading = false;
+      toast.error(payload);
+    },
+    [googleLogin.pending]: (state) => {
+      state.loading = true;
+    },
+    [googleLogin.fulfilled]: (state, { payload }) => {
+      state.loading = false;
+      state.user = payload.user;
+      localStorage.setItem("user", JSON.stringify(payload.user));
+      toast.success(`Welcome Wanderer ${payload.user.name}`);
+    },
+    [googleLogin.rejected]: (state, { payload }) => {
       state.loading = false;
       toast.error(payload);
     },
