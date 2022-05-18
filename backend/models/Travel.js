@@ -22,11 +22,10 @@ const TravelSchema = new mongoose.Schema(
     creator: {
       type: mongoose.Types.ObjectId,
       ref: "User",
-      required: true,
     },
     createdAt: {
       type: Date,
-      default: new Date(),
+      default: new Date().toISOString(),
     },
   },
   { timestamps: true }
