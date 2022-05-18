@@ -74,6 +74,7 @@ const Login = () => {
         navigate("/home");
       }, 2000);
     }
+    // eslint-disable-next-line
   }, [user]);
 
   return (
