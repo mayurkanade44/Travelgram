@@ -17,6 +17,7 @@ const InputRow = ({
       name={name}
       onChange={onChange}
       required={required}
+      className='form-control'
       validation="Please provide your email"
     />
   );

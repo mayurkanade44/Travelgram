@@ -19,7 +19,11 @@ const TravelSchema = new mongoose.Schema(
       type: Number,
       default: 0,
     },
-    creator: {
+    creatorName: {
+      type: String,
+      required: true,
+    },
+    creatorId: {
       type: mongoose.Types.ObjectId,
       ref: "User",
     },
