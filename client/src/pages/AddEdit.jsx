@@ -13,6 +13,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useState } from "react";
 import { InputRow } from "../components";
+import { createBlog } from "../redux/travelSlice";
 
 const initialState = {
   title: "",
@@ -23,6 +24,9 @@ const initialState = {
 const AddEdit = () => {
   const [travelBlog, setTravelBlog] = useState(initialState);
   const { title, description, tags } = travelBlog;
+  const { loading } = useSelector((store) => store.travel);
+  const { user } = useSelector((store) => store.user);
+  const dispatch = useDispatch();
 
   const handleAddTag = (tag) => {
     setTravelBlog({ ...travelBlog, tags: [...travelBlog.tags, tag] });
@@ -39,6 +43,12 @@ const AddEdit = () => {
   };
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    if (title && description && tags) {
+      const newBlog = { ...travelBlog, creatorName: user?.name };
+      dispatch(createBlog(newBlog));
+      handleClear()
+    }
   };
 
   const handleChange = (e) => {
@@ -80,7 +90,6 @@ const AddEdit = () => {
                 name="description"
                 className="form-control"
                 required
-                invalid
                 rows={4}
                 onChange={handleChange}
                 validation="Please provide description"
