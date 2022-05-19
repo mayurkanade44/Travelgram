@@ -45,7 +45,7 @@ const AddEdit = () => {
     e.preventDefault();
 
     if (title && description && tags) {
-      const newBlog = { ...travelBlog, creatorName: user?.name };
+      const newBlog = { ...travelBlog, creatorName: user.name };
       dispatch(createBlog(newBlog));
       handleClear()
     }
