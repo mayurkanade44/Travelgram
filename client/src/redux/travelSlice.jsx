@@ -38,7 +38,7 @@ export const singleBlog = createAsyncThunk(
   "travel/blog",
   async (id, thunkAPI) => {
     try {
-      const res = await authFetch.get(`/blog/${id}`);
+      const res = await authFetch.get(`/travel/blog/${id}`);
       return res.data;
     } catch (error) {
       console.log(error);
