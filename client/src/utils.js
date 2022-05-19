@@ -2,8 +2,10 @@ import axios from "axios";
 
 export const authFetch = axios.create({ baseURL: "/api" });
 
-export const removeLoacalStorage = () => {
-  return localStorage.removeItem("user");
-};
-
-
+authFetch.interceptors.request.use((config) => {
+  const user = JSON.parse(localStorage.getItem("user"));
+  if (user) {
+    config.headers.common["Authorization"] = `Bearer ${user.token}`;
+  }
+  return config;
+});

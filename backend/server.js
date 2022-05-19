@@ -7,7 +7,9 @@ const app = express();
 dotenv.config();
 
 import userRouter from "./routes/userRoute.js";
-import travelRouter from './routes/travelRoute.js'
+import travelRouter from "./routes/travelRoute.js";
+
+import { authenticateUser } from "./middleware/auth.js";
 
 if (process.env.NODE_ENV !== "production") {
   app.use(morgan("dev"));
@@ -16,7 +18,7 @@ app.use(express.json({ limit: "10mb", extended: true }));
 app.use(express.urlencoded({ limit: "10mb", extended: true }));
 
 app.use("/api/user", userRouter);
-app.use("/api/travel", travelRouter);
+app.use("/api/travel", authenticateUser, travelRouter);
 
 const port = process.env.PORT || 5000;
 const start = async () => {
