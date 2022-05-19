@@ -44,3 +44,12 @@ export const getSingleTravel = async (req, res) => {
       .json({ msg: "Something went wrong, please try again later" });
   }
 };
+
+export const travelByUser = async(req,res) => {
+  try {
+    const travels = await Travel.find({ creatorId: req.user.userId});
+    return res.status(200).json(travels)
+  } catch (error) {
+    console.log(error);
+  }
+}
