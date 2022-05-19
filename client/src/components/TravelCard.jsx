@@ -44,7 +44,7 @@ const TravelCard = ({
           <MDBCardTitle className="text-start">{title}</MDBCardTitle>
           <MDBCardText className="text-start">
               {description.substring(0,10) + "..."}
-            <Link to={`/tour/${_id}`}>Read More</Link>
+            <Link to={`/travelBlog/${_id}`}>Read More</Link>
           </MDBCardText>
         </MDBCardBody>
       </MDBCard>

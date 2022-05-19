@@ -27,7 +27,19 @@ export const getAllBlogs = createAsyncThunk(
     try {
       const res = await authFetch.get("/travel");
       return res.data;
+    } catch (error) {
+      console.log(error);
+      return thunkAPI.rejectWithValue(error.response.data.msg);
+    }
+  }
+);
 
+export const singleBlog = createAsyncThunk(
+  "travel/blog",
+  async (id, thunkAPI) => {
+    try {
+      const res = await authFetch.get(`/blog/${id}`);
+      return res.data;
     } catch (error) {
       console.log(error);
       return thunkAPI.rejectWithValue(error.response.data.msg);
@@ -58,6 +70,17 @@ const travelSlice = createSlice({
       state.blogs = payload;
     },
     [getAllBlogs.rejected]: (state, { payload }) => {
+      state.loading = false;
+      toast.error(payload);
+    },
+    [singleBlog.pending]: (state) => {
+      state.loading = true;
+    },
+    [singleBlog.fulfilled]: (state, { payload }) => {
+      state.loading = false;
+      state.blog = payload;
+    },
+    [singleBlog.rejected]: (state, { payload }) => {
       state.loading = false;
       toast.error(payload);
     },

@@ -28,3 +28,19 @@ export const getAllTravels = async (req, res) => {
       .json({ msg: "Something went wrong, please try again later" });
   }
 };
+
+export const getSingleTravel = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const travel = await Travel.findOne({ _id: id });
+    if (!travel) {
+      return res.status(400).json({ msg: "No travel blog found" });
+    }
+    return res.status(200).json(travel);
+  } catch (error) {
+    console.log(error);
+    return res
+      .status(404)
+      .json({ msg: "Something went wrong, please try again later" });
+  }
+};
