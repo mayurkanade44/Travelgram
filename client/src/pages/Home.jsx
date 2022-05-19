@@ -13,8 +13,6 @@ const Home = () => {
     dispatch(getAllBlogs());
   }, []);
 
-  console.log(blogs);
-
   return (
     <div
       style={{

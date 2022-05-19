@@ -34,7 +34,6 @@ const TravelCard = ({
         <span className="text-start tag-card">
           {tags.map((tag, index) => (
             <Link key={index} to={`/tours/tag/${tag}`}>
-              {" "}
               #{tag}
             </Link>
           ))}
@@ -43,7 +42,7 @@ const TravelCard = ({
         <MDBCardBody>
           <MDBCardTitle className="text-start">{title}</MDBCardTitle>
           <MDBCardText className="text-start">
-              {description.substring(0,10) + "..."}
+            {description.substring(0, 10) + "..."}
             <Link to={`/travelBlog/${_id}`}>Read More</Link>
           </MDBCardText>
         </MDBCardBody>
