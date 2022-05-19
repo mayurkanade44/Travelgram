@@ -6,6 +6,7 @@ export const createTravel = async (req, res) => {
     return res.status(400).json({ msg: "Please provide all required values" });
   }
   try {
+    req.body.creatorId = req.user.userId;
     const travel = await Travel.create(req.body);
     res.status(201).json({ msg: "Created successfully" });
   } catch (error) {

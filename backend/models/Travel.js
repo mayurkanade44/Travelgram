@@ -26,6 +26,7 @@ const TravelSchema = new mongoose.Schema(
     creatorId: {
       type: mongoose.Types.ObjectId,
       ref: "User",
+      required: true,
     },
     createdAt: {
       type: Date,
