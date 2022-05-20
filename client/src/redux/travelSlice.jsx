@@ -6,7 +6,7 @@ const initialState = {
   loading: false,
   blog: {},
   blogs: [],
-  userBlogs:[]
+  userBlogs: [],
 };
 
 export const createBlog = createAsyncThunk(
@@ -48,15 +48,32 @@ export const singleBlog = createAsyncThunk(
   }
 );
 
-export const getUserBlogs = createAsyncThunk("travel/userBlogs", async(_, thunkAPI)=>{
-  try {
-    const res = await authFetch.get('/travel/userTravels')
-    return res.data
-  } catch (error) {
-    console.log(error);
-    return thunkAPI.rejectWithValue(error.response.data.msg);
+export const getUserBlogs = createAsyncThunk(
+  "travel/userBlogs",
+  async (_, thunkAPI) => {
+    try {
+      const res = await authFetch.get("/travel/userTravels");
+      return res.data;
+    } catch (error) {
+      console.log(error);
+      return thunkAPI.rejectWithValue(error.response.data.msg);
+    }
   }
-});
+);
+
+export const deleteBlog = createAsyncThunk(
+  "travel/deleteBlog",
+  async (id, thunkAPI) => {
+    try {
+      const res = await authFetch.delete(`/travel/blog/${id}`);
+      thunkAPI.dispatch(getUserBlogs())
+      return res.data.msg;
+    } catch (error) {
+      console.log(error);
+      return thunkAPI.rejectWithValue(error.response.data.msg);
+    }
+  }
+);
 
 const travelSlice = createSlice({
   name: "travel",
@@ -103,6 +120,17 @@ const travelSlice = createSlice({
       state.userBlogs = payload;
     },
     [getUserBlogs.rejected]: (state, { payload }) => {
+      state.loading = false;
+      toast.error(payload);
+    },
+    [deleteBlog.pending]: (state) => {
+      state.loading = true;
+    },
+    [deleteBlog.fulfilled]: (state, { payload }) => {
+      state.loading = false;
+      toast.success(payload);
+    },
+    [deleteBlog.rejected]: (state, { payload }) => {
       state.loading = false;
       toast.error(payload);
     },

@@ -15,7 +15,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import { Spinner } from "../components";
-import { getUserBlogs } from "../redux/travelSlice";
+import { deleteBlog, getUserBlogs } from "../redux/travelSlice";
 
 const Dahsboard = () => {
   const { userBlogs, loading } = useSelector((store) => store.travel);
@@ -86,7 +86,7 @@ const Dahsboard = () => {
                         icon="trash"
                         style={{ color: "#dd4b39" }}
                         size="lg"
-                        onClick={() => handleDelete(item._id)}
+                        onClick={() => dispatch(deleteBlog(item._id))}
                       />
                     </MDBBtn>
                     <Link to={`/editTravel/${item._id}`}>
