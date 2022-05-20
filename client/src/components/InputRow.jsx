@@ -3,7 +3,7 @@ import { MDBInput } from "mdb-react-ui-kit";
 const InputRow = ({
   label,
   type,
-  email,
+  value,
   name,
   onChange,
   required,
@@ -13,7 +13,7 @@ const InputRow = ({
     <MDBInput
       label={label}
       type={type}
-      value={email}
+      value={value}
       name={name}
       onChange={onChange}
       required={required}

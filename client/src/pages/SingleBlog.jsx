@@ -15,8 +15,8 @@ import { singleBlog } from "../redux/travelSlice";
 
 const SingleBlog = () => {
   const dispatch = useDispatch();
-  const { blog } = useSelector((store) => store.travel);
   const { id } = useParams();
+  const { blog } = useSelector((store) => store.travel);
 
   useEffect(() => {
     dispatch(singleBlog(id));
@@ -34,7 +34,9 @@ const SingleBlog = () => {
         <MDBCardBody>
           <h3>{blog.title}</h3>
           <span>
-            <p className="text-start tourName">Created By: {blog.creatorName}</p>
+            <p className="text-start tourName">
+              Created By: {blog.creatorName}
+            </p>
           </span>
           <div style={{ float: "left" }}>
             <span className="text-start">

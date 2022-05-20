@@ -11,9 +11,9 @@ import FileBase from "react-file-base64";
 import { toast } from "react-toastify";
 import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { InputRow } from "../components";
-import { createBlog } from "../redux/travelSlice";
+import { createBlog, singleBlog, updateBlog } from "../redux/travelSlice";
 
 const initialState = {
   title: "",
@@ -23,10 +23,18 @@ const initialState = {
 
 const AddEdit = () => {
   const [travelBlog, setTravelBlog] = useState(initialState);
-  const { title, description, tags } = travelBlog;
-  const { loading } = useSelector((store) => store.travel);
-  const { user } = useSelector((store) => store.user);
   const dispatch = useDispatch();
+  const { id } = useParams();
+  const { title, description, tags } = travelBlog;
+  const { loading, userBlogs } = useSelector((store) => store.travel);
+  const { user } = useSelector((store) => store.user);
+
+  useEffect(() => {
+    if (id) {
+      const singleBlog = userBlogs.find((tour) => tour._id === id);
+      setTravelBlog({ ...singleBlog });
+    }
+  }, [id]);
 
   const handleAddTag = (tag) => {
     setTravelBlog({ ...travelBlog, tags: [...travelBlog.tags, tag] });
@@ -46,8 +54,14 @@ const AddEdit = () => {
 
     if (title && description && tags) {
       const newBlog = { ...travelBlog, creatorName: user.name };
-      dispatch(createBlog(newBlog));
-      handleClear()
+
+      if (id) {
+        dispatch(updateBlog({ id, travelBlog }));
+      } else {
+        dispatch(createBlog(newBlog));
+      }
+
+      handleClear();
     }
   };
 
@@ -69,7 +83,7 @@ const AddEdit = () => {
       className="container"
     >
       <MDBCard alignment="center">
-        <h5>Add Travel Blog</h5>
+        <h5>{id ? "Update Travel Blog" : "Add Travel Blog"}</h5>
         <MDBCardBody>
           <MDBValidation onSubmit={handleSubmit} className="row g-3" noValidate>
             <div className="col-md-12">
@@ -116,7 +130,9 @@ const AddEdit = () => {
               />
             </div>
             <div className="col-12">
-              <MDBBtn style={{ width: "100%" }}>Submit</MDBBtn>
+              <MDBBtn style={{ width: "100%" }}>
+                {id ? "Update" : "Submit"}
+              </MDBBtn>
               <MDBBtn
                 style={{ width: "100%" }}
                 className="mt-2"

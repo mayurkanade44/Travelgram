@@ -66,8 +66,21 @@ export const deleteBlog = createAsyncThunk(
   async (id, thunkAPI) => {
     try {
       const res = await authFetch.delete(`/travel/blog/${id}`);
-      thunkAPI.dispatch(getUserBlogs())
+      thunkAPI.dispatch(getUserBlogs());
       return res.data.msg;
+    } catch (error) {
+      console.log(error);
+      return thunkAPI.rejectWithValue(error.response.data.msg);
+    }
+  }
+);
+
+export const updateBlog = createAsyncThunk(
+  "travel/updateBlog",
+  async ({ id, travelBlog }, thunkAPI) => {
+    try {
+      const res = await authFetch.patch(`/travel/blog/${id}`, travelBlog);
+      return res.data;
     } catch (error) {
       console.log(error);
       return thunkAPI.rejectWithValue(error.response.data.msg);
@@ -131,6 +144,17 @@ const travelSlice = createSlice({
       toast.success(payload);
     },
     [deleteBlog.rejected]: (state, { payload }) => {
+      state.loading = false;
+      toast.error(payload);
+    },
+    [updateBlog.pending]: (state) => {
+      state.loading = true;
+    },
+    [updateBlog.fulfilled]: (state, { payload }) => {
+      state.loading = false;
+      toast.success(payload);
+    },
+    [updateBlog.rejected]: (state, { payload }) => {
       state.loading = false;
       toast.error(payload);
     },

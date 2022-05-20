@@ -72,12 +72,12 @@ export const deleteTravel = async (req, res) => {
 
 export const updateTravel = async (req, res) => {
   const { id } = req.params;
-  const { title, description, image, creatorName, tag } = req.boday;
+  const { title, description, image, creatorName, tag } = req.body;
   try {
-    if (!title || !description || !image || !creatorName || !tag) {
-      return res.status(400).json({ msg: "Please provide all values" });
-    }
-    const travel = await Travel.find({ _id: id });
+    // if (!title || !description || !image || !creatorName || !tag) {
+    //   return res.status(400).json({ msg: "Please provide all values" });
+    // }
+    const travel = await Travel.findOne({ _id: id });
     checkPermission(req.user.userId, travel.creatorId);
 
     const udpateBlog = await Travel.findOneAndUpdate({ _id: id }, req.body, {
