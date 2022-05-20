@@ -28,6 +28,7 @@ const AddEdit = () => {
   const { title, description, tags } = travelBlog;
   const { loading, userBlogs } = useSelector((store) => store.travel);
   const { user } = useSelector((store) => store.user);
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (id) {
@@ -60,7 +61,7 @@ const AddEdit = () => {
       } else {
         dispatch(createBlog(newBlog));
       }
-
+      navigate("/home");
       handleClear();
     }
   };

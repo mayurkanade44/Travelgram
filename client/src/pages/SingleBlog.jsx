@@ -12,15 +12,20 @@ import { useParams, useNavigate } from "react-router-dom";
 import moment from "moment";
 import { useEffect } from "react";
 import { singleBlog } from "../redux/travelSlice";
+import { Spinner } from "../components";
 
 const SingleBlog = () => {
   const dispatch = useDispatch();
   const { id } = useParams();
-  const { blog } = useSelector((store) => store.travel);
+  const { loading, blog } = useSelector((store) => store.travel);
 
   useEffect(() => {
     dispatch(singleBlog(id));
   }, [id]);
+
+  if (loading) {
+    return <Spinner />;
+  }
 
   return (
     <MDBContainer>
