@@ -14,10 +14,11 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
+import { Spinner } from "../components";
 import { getUserBlogs } from "../redux/travelSlice";
 
 const Dahsboard = () => {
-  const { userBlogs } = useSelector((store) => store.travel);
+  const { userBlogs, loading } = useSelector((store) => store.travel);
   const { user } = useSelector((store) => store.user);
   const dispatch = useDispatch();
 
@@ -26,6 +27,10 @@ const Dahsboard = () => {
   }, []);
 
   const handleDelete = () => {};
+
+  if (loading) {
+    return <Spinner />;
+  }
 
   return (
     <div
@@ -55,7 +60,7 @@ const Dahsboard = () => {
                   src={item.image}
                   alt={item.title}
                   fluid
-                  style={{height:100}}
+                  style={{ height: 100 }}
                 />
               </MDBCol>
               <MDBCol md="8">

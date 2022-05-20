@@ -3,15 +3,19 @@ import { MDBCol, MDBContainer, MDBRow, MDBTypography } from "mdb-react-ui-kit";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { getAllBlogs } from "../redux/travelSlice";
-import { TravelCard } from "../components";
+import { Spinner, TravelCard } from "../components";
 
 const Home = () => {
-  const { blogs } = useSelector((store) => store.travel);
+  const { blogs, loading } = useSelector((store) => store.travel);
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(getAllBlogs());
   }, []);
+
+  if (loading) {
+    return <Spinner />;
+  }
 
   return (
     <div
