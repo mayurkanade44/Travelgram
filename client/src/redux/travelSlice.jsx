@@ -48,7 +48,7 @@ export const singleBlog = createAsyncThunk(
   }
 );
 
-export const userBlogs = createAsyncThunk("travel/userBlogs", async(_, thunkAPI)=>{
+export const getUserBlogs = createAsyncThunk("travel/userBlogs", async(_, thunkAPI)=>{
   try {
     const res = await authFetch.get('/travel/userTravels')
     return res.data
@@ -95,14 +95,14 @@ const travelSlice = createSlice({
       state.loading = false;
       toast.error(payload);
     },
-    [userBlogs.pending]: (state) => {
+    [getUserBlogs.pending]: (state) => {
       state.loading = true;
     },
-    [userBlogs.fulfilled]: (state, { payload }) => {
+    [getUserBlogs.fulfilled]: (state, { payload }) => {
       state.loading = false;
       state.userBlogs = payload;
     },
-    [userBlogs.rejected]: (state, { payload }) => {
+    [getUserBlogs.rejected]: (state, { payload }) => {
       state.loading = false;
       toast.error(payload);
     },

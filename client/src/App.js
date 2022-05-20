@@ -3,7 +3,7 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { AddEdit, Home, Login, SingleBlog } from "./pages";
+import { AddEdit, Dahsboard, Home, Login, SingleBlog } from "./pages";
 import { Navbar } from "./components";
 
 function App() {
@@ -16,6 +16,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/home" element={<Home />} />
           <Route path="/addTravel" element={<AddEdit />} />
+          <Route path="/dashboard" element={<Dahsboard />} />
           <Route path="/editTravel/:id" element={<AddEdit />} />
           <Route path="/travelBlog/:id" element={<SingleBlog />} />
         </Routes>
