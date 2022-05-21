@@ -11,13 +11,18 @@ import { useDispatch, useSelector } from "react-redux";
 import { useParams, useNavigate } from "react-router-dom";
 import moment from "moment";
 import { useEffect } from "react";
-import { singleBlog } from "../redux/travelSlice";
-import { Spinner } from "../components";
+import { realtedBlogs, singleBlog } from "../redux/travelSlice";
+import { RelatedBlogs, Spinner } from "../components";
 
 const SingleBlog = () => {
   const dispatch = useDispatch();
   const { id } = useParams();
-  const { loading, blog } = useSelector((store) => store.travel);
+  const { loading, blog, realtedBlog } = useSelector((store) => store.travel);
+  const tags = blog?.tags;
+
+  useEffect(() => {
+    tags && dispatch(realtedBlogs(tags));
+  }, [tags]);
 
   useEffect(() => {
     dispatch(singleBlog(id));
@@ -28,7 +33,7 @@ const SingleBlog = () => {
   }
 
   return (
-    <MDBContainer>
+    <MDBContainer style={{marginTop:64}}>
       <MDBCard className="mb-3 mt-2">
         <MDBCardImage
           position="top"
@@ -64,6 +69,7 @@ const SingleBlog = () => {
             {blog.description}
           </MDBCardText>
         </MDBCardBody>
+        <RelatedBlogs relatedBlogs={realtedBlog} blogId={id} />
       </MDBCard>
     </MDBContainer>
   );

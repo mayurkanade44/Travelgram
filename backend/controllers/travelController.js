@@ -123,3 +123,15 @@ export const travelByTags = async (req, res) => {
       .json({ msg: "Something went wrong, please try again later" });
   }
 };
+
+export const realtedTravels = async (req, res) => {
+  const tags = req.body;
+  try {
+    const travels = await Travel.find({ tags: { $in: tags } });
+    res.json(travels);
+  } catch (error) {
+    res
+      .status(404)
+      .json({ msg: "Something went wrong, please try again later" });
+  }
+};

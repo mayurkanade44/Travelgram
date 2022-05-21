@@ -4,6 +4,7 @@ import {
   deleteTravel,
   getAllTravels,
   getSingleTravel,
+  realtedTravels,
   searchTravel,
   travelByTags,
   travelByUser,
@@ -20,6 +21,6 @@ router
   .route("/blog/:id")
   .get(getSingleTravel)
   .patch(updateTravel)
-  .delete(deleteTravel);
+  .delete(deleteTravel).post(realtedTravels);
 
 export default router;
