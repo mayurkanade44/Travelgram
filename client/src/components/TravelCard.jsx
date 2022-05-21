@@ -21,6 +21,7 @@ const TravelCard = ({
   likes,
   tags,
 }) => {
+
   return (
     <MDBCardGroup>
       <MDBCard className="h-100 mt-2 d-sm-flex" style={{ maxWidth: "20rem" }}>
@@ -33,7 +34,7 @@ const TravelCard = ({
         <div className="top-left">{creatorName}</div>
         <span className="text-start tag-card">
           {tags.map((tag, index) => (
-            <Link key={index} to={`/tours/tag/${tag}`}>
+            <Link key={index} to={`/travelTags/${tag}`}>
               {` #${tag}`}
             </Link>
           ))}

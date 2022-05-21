@@ -5,6 +5,7 @@ import {
   getAllTravels,
   getSingleTravel,
   searchTravel,
+  travelByTags,
   travelByUser,
   updateTravel,
 } from "../controllers/travelController.js";
@@ -12,8 +13,9 @@ import {
 const router = express.Router();
 
 router.route("/").post(createTravel).get(getAllTravels);
-router.route("/search").get(searchTravel);
 router.route("/userTravels").get(travelByUser);
+router.route("/search").get(searchTravel);
+router.route("/search/:tag").get(travelByTags);
 router
   .route("/blog/:id")
   .get(getSingleTravel)

@@ -31,6 +31,7 @@ function App() {
             }
           />
           <Route path="/dashboard" element={<Dahsboard />} />
+          <Route path="/travelTags/:tag" element={<Home />} />
           <Route path="/editTravel/:id" element={<AddEdit />} />
           <Route path="/travelBlog/:id" element={<SingleBlog />} />
           <Route path="*" element={<PageNotFound />} />

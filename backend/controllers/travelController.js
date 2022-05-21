@@ -110,3 +110,16 @@ export const searchTravel = async (req, res) => {
       .json({ msg: "Something went wrong, please try again later" });
   }
 };
+
+export const travelByTags = async (req, res) => {
+  const { tag } = req.params;
+  try {
+    const travels = await Travel.find({ tags: { $in: tag } });
+    res.status(200).json(travels);
+  } catch (error) {
+    console.log(error);
+    return res
+      .status(404)
+      .json({ msg: "Something went wrong, please try again later" });
+  }
+};
