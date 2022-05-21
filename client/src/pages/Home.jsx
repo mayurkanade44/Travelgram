@@ -13,6 +13,8 @@ const Home = () => {
     dispatch(getAllBlogs());
   }, []);
 
+  console.log(blogs);
+
   if (loading) {
     return <Spinner />;
   }

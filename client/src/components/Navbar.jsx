@@ -11,12 +11,23 @@ import {
 import { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
+import { getAllBlogs, searchBlog } from "../redux/travelSlice";
 import { logout } from "../redux/userSlice";
 
 const Navbar = () => {
   const { user } = useSelector((store) => store.user);
   const dispatch = useDispatch();
   const [show, setShow] = useState(false);
+  const [search, setSearch] = useState("");
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (search) {
+      dispatch(searchBlog(search));
+    } else {
+      dispatch(getAllBlogs());
+    }
+  };
 
   return (
     <MDBNavbar fixed="top" expand="lg" style={{ backgroundColor: "black" }}>
@@ -74,6 +85,18 @@ const Navbar = () => {
               </>
             )}
           </MDBNavbarNav>
+          <form className="d-flex input-group w-auto" onSubmit={handleSubmit}>
+            <input
+              type="text"
+              className="form-control"
+              placeholder="Search Trave Blog"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+            />
+            <div style={{ marginTop: "5px", marginLeft: "5px" }}>
+              <MDBIcon fas icon="search" />
+            </div>
+          </form>
         </MDBCollapse>
       </MDBContainer>
     </MDBNavbar>

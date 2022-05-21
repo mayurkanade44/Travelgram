@@ -1,3 +1,4 @@
+import { json } from "express";
 import Travel from "../models/Travel.js";
 import checkPermission from "../utils.js";
 
@@ -85,6 +86,23 @@ export const updateTravel = async (req, res) => {
       runValidators: true,
     });
     res.status(200).json({ udpateBlog });
+  } catch (error) {
+    console.log(error);
+    return res
+      .status(404)
+      .json({ msg: "Something went wrong, please try again later" });
+  }
+};
+
+export const searchTravel = async (req, res) => {
+  const { searchQuery } = req.query;
+  try {
+    const title = new RegExp(searchQuery, "i");
+    const travels = await Travel.find({ title });
+    if (!travels) {
+      return res.status(400).json({ msg: "No Travel Blog find" });
+    }
+    res.status(200).json(travels);
   } catch (error) {
     console.log(error);
     return res

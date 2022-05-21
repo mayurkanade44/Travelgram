@@ -88,6 +88,21 @@ export const updateBlog = createAsyncThunk(
   }
 );
 
+export const searchBlog = createAsyncThunk(
+  "travel/searchBlog",
+  async (searchQuery, thunkAPI) => {
+    try {
+      const res = await authFetch.get(
+        `/travel/search?searchQuery=${searchQuery}`
+      );
+      return res.data
+    } catch (error) {
+      console.log(error);
+      return thunkAPI.rejectWithValue(error.response.data.msg);
+    }
+  }
+);
+
 const travelSlice = createSlice({
   name: "travel",
   initialState,
@@ -155,6 +170,17 @@ const travelSlice = createSlice({
       toast.success(payload);
     },
     [updateBlog.rejected]: (state, { payload }) => {
+      state.loading = false;
+      toast.error(payload);
+    },
+    [searchBlog.pending]: (state) => {
+      state.loading = true;
+    },
+    [searchBlog.fulfilled]: (state, { payload }) => {
+      state.loading = false;
+      state.blogs = payload;
+    },
+    [searchBlog.rejected]: (state, { payload }) => {
       state.loading = false;
       toast.error(payload);
     },
