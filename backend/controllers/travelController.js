@@ -146,7 +146,7 @@ export const realtedTravels = async (req, res) => {
 export const likeTravel = async (req, res) => {
   const { id } = req.params;
 
-  if (req.user.userId) {
+  if (!req.user.userId) {
     return res
       .status(403)
       .json({ msg: "You are not authorised to like this blog" });
@@ -157,18 +157,18 @@ export const likeTravel = async (req, res) => {
       (id) => id === String(req.user.userId)
     );
     if (index === -1) {
-      travel.likesCount.push(req.use.userId);
+      travel.likesCount.push(req.user.userId);
     } else {
       travel.likesCount = travel.likesCount.filter(
         (id) => id !== String(req.user.userId)
       );
     }
 
-    const updatedTravel = await Travel.findOneAndUpdate(id, travel, {
+    const updatedTravel = await Travel.findOneAndUpdate({ _id: id }, travel, {
       new: true,
       runValidators: true,
     });
-    res.status(200).json(updateTravel);
+    res.status(200).json(updatedTravel);
   } catch (error) {
     console.log(error);
     res

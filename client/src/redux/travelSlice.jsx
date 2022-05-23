@@ -131,6 +131,19 @@ export const realtedBlogs = createAsyncThunk(
   }
 );
 
+export const blogLikes = createAsyncThunk(
+  "travel/likeBlogs",
+  async ({ _id }, thunkAPI) => {
+    try {
+      const res = await authFetch.patch(`/travel/like/${_id}`);
+      return res.data;
+    } catch (error) {
+      console.log(error);
+      return thunkAPI.rejectWithValue(error.response.data.msg);
+    }
+  }
+);
+
 const travelSlice = createSlice({
   name: "travel",
   initialState,
@@ -231,6 +244,16 @@ const travelSlice = createSlice({
       state.realtedBlog = payload;
     },
     [realtedBlogs.rejected]: (state, { payload }) => {
+      state.pending = false;
+      toast.error = payload;
+    },
+    [blogLikes.fulfilled]: (state, { payload }) => {
+      state.loading = false;
+      state.blogs = state.blogs.map((blog) =>
+        blog._id === payload._id ? payload : blog
+      );
+    },
+    [blogLikes.rejected]: (state, { payload }) => {
       state.pending = false;
       toast.error = payload;
     },

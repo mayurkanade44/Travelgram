@@ -11,6 +11,7 @@ import {
 } from "mdb-react-ui-kit";
 import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
+import { blogLikes } from "../redux/travelSlice";
 
 const TravelCard = ({
   title,
@@ -18,9 +19,48 @@ const TravelCard = ({
   image,
   _id,
   creatorName,
-  likes,
+  likesCount,
   tags,
 }) => {
+  const { user } = useSelector((store) => store.user);
+  const dispatch = useDispatch();
+  const userId = user.userId;
+  const Likes = () => {
+    if (likesCount.length > 0) {
+      return likesCount.find((like) => like === userId) ? (
+        <>
+          <MDBIcon fas icon="thumbs-up" />
+          &nbsp;
+          {likesCount.length > 2 ? (
+            <MDBTooltip
+              tag="a"
+              title={`You and ${likesCount.length - 1} other people likesCount`}
+            >
+              {likesCount.length} Likes
+            </MDBTooltip>
+          ) : (
+            `${likesCount.length} Like${likesCount.length > 1 ? "s" : ""}`
+          )}
+        </>
+      ) : (
+        <>
+          <MDBIcon far icon="thumbs-up" />
+          &nbsp;{likesCount.length} {likesCount.length === 1 ? "Like" : "Likes"}
+        </>
+      );
+    }
+    return (
+      <>
+        <MDBIcon far icon="thumbs-up" />
+        &nbsp;Like
+      </>
+    );
+  };
+
+  const handleLike = () => {
+    dispatch(blogLikes({ _id }));
+  };
+  
 
   return (
     <MDBCardGroup>
@@ -38,7 +78,14 @@ const TravelCard = ({
               {` #${tag}`}
             </Link>
           ))}
-          <MDBBtn style={{ float: "right" }} tag="a" color="none"></MDBBtn>
+          <MDBBtn
+            style={{ float: "right" }}
+            tag="a"
+            color="none"
+            onClick={handleLike}
+          >
+            <Likes />
+          </MDBBtn>
         </span>
         <MDBCardBody>
           <MDBCardTitle className="text-start">{title}</MDBCardTitle>
