@@ -19,6 +19,10 @@ const TravelSchema = new mongoose.Schema(
       type: Number,
       default: 0,
     },
+    likesCount: {
+      type: [String],
+      default: [],
+    },
     creatorName: {
       type: String,
       required: true,

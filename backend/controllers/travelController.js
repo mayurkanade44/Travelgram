@@ -20,9 +20,15 @@ export const createTravel = async (req, res) => {
 };
 
 export const getAllTravels = async (req, res) => {
+  const { page } = req.query;
   try {
     const travels = await Travel.find();
     res.status(200).json(travels);
+
+    // const limit = 6;
+    // const skip = (Number(page) - 1) * limit;
+    // const total = await Travel.countDocuments({});
+    // const travels = await Travel.find().limit(limit).skip(skip);
   } catch (error) {
     console.log(error);
     res
@@ -130,6 +136,41 @@ export const realtedTravels = async (req, res) => {
     const travels = await Travel.find({ tags: { $in: tags } });
     res.json(travels);
   } catch (error) {
+    console.log(error);
+    res
+      .status(404)
+      .json({ msg: "Something went wrong, please try again later" });
+  }
+};
+
+export const likeTravel = async (req, res) => {
+  const { id } = req.params;
+
+  if (req.user.userId) {
+    return res
+      .status(403)
+      .json({ msg: "You are not authorised to like this blog" });
+  }
+  try {
+    const travel = await Travel.findOne({ _id: id });
+    const index = travel.likesCount.findIndex(
+      (id) => id === String(req.user.userId)
+    );
+    if (index === -1) {
+      travel.likesCount.push(req.use.userId);
+    } else {
+      travel.likesCount = travel.likesCount.filter(
+        (id) => id !== String(req.user.userId)
+      );
+    }
+
+    const updatedTravel = await Travel.findOneAndUpdate(id, travel, {
+      new: true,
+      runValidators: true,
+    });
+    res.status(200).json(updateTravel);
+  } catch (error) {
+    console.log(error);
     res
       .status(404)
       .json({ msg: "Something went wrong, please try again later" });
